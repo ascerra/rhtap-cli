@@ -38,6 +38,14 @@ spec:
     - name: oci-container-repo
       default: 'quay.io/konflux-test-storage/rhtap-team/rhtap-cli'
       description: The ORAS container used to store all test artifacts.
+    - name: git-url
+      description: 'Override Git repository URL.'
+      default: https://github.com/redhat-appstudio/rhtap-cli.git
+      type: string
+    - name: git-revision
+      description: 'Override Git revision (branch or commit).'
+      default: main
+      type: string
   tasks:
     - name: rosa-hcp-metadata
       taskRef:
@@ -126,6 +134,10 @@ spec:
             value: main
           - name: pathInRepo
             value: integration-tests/tasks/rhtap-install.yaml
+          - name: git-url
+            value: "$(params.git-url)"
+          - name: git-revision
+            value: "$(params.git-revision)"
       params:
         - name: ocp-login-command
           value: "$(tasks.provision-rosa.results.ocp-login-command)"
